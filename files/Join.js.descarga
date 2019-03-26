@@ -1,0 +1,14 @@
+var Join = {
+	Init: function(){
+		$('body').on('click', '.join', function(e){
+			Join.Submit($('.username').val());
+		});
+	},
+	Submit: function(username){
+		window.location = '/join-date/submit/' + encodeURIComponent(username);
+	}
+};
+
+$(document).ready(function(){
+	Join.Init();
+});
