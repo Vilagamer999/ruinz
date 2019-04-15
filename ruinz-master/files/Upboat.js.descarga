@@ -1,0 +1,54 @@
+var Upboat = {
+	Init: function(){
+		$('body').on('click', '.upboat', function(){
+			Upboat.Upboat($(this).attr('data-id'));
+		});
+		
+		$('body').on('click', '.shitpost', function(){
+			Upboat.Shitpost($(this).attr('data-id'));
+		});
+	},
+	Upboat: function(id){
+		$.ajax({
+			url: '/gallery/upvote/' + id,
+			type: "POST",
+			dataType: "json",
+			success: function(response) {
+				if(response.score !== undefined){
+					$('.score').text(response.score);
+				}
+			}
+		});
+		
+		Upboat.Voted('upvote');
+	},
+	Shitpost: function(id){
+		$.ajax({
+			url: '/gallery/downvote/' + id,
+			type: "POST",
+			dataType: "json",
+			success: function(response) {
+				if(response.score !== undefined){
+					$('.score').text(response.score);
+				}
+			}
+		});
+		
+		Upboat.Voted('downvote');
+	},
+	Voted: function(type){
+		$('.upboated, .shitposted').removeClass('upboated shitposted');
+		switch(type){
+			case 'upvote':
+				$('.upboat').addClass('upboated');
+				break;
+			case 'downvote':
+				$('.shitpost').addClass('shitposted');
+				break;
+		}
+	}
+};
+
+$(document).ready(function(){
+	Upboat.Init();
+});
